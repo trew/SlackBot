@@ -1,0 +1,15 @@
+{
+  "database": {
+    "type": "sqlite",
+    "file": "db.sqlite"
+  },
+  "database": {
+    "type": "postgresql",
+    "user": "",
+    "password": "",
+    "host": "",
+    "port": 1234,
+    "name": ""
+  },
+  "token": "<SLACK-TOKEN>"
+}

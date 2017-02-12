@@ -1,0 +1,7 @@
+.idea/
+log/
+config/*.json
+
+*.sqlite
+*.pyc
+*.log
