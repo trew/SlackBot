@@ -4,7 +4,7 @@ from threading import Thread
 from slackclient import SlackClient
 
 from .storage import Database
-from .commands import CofiCommand, LunchCommand
+from .commands import CofiCommand, ResponseCommand
 
 log = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ class SlackBot(object):
         self.database = Database(config['database'])
         self.commands = [
             CofiCommand(),
-            LunchCommand()
+            ResponseCommand()
         ]
 
     def start(self):
