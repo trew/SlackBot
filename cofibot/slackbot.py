@@ -52,6 +52,14 @@ class SlackBot(object):
         channel = self.sc.server.channels.find(data['channel'])
         self.sc.api_call('chat.postMessage', channel=channel.id, text=message, username=self.sc.server.username)
 
+    def react_with(self, reaction, data):
+        """
+        Reacts to a message. Finding a message is simply a combination of channel ID and timestamp.
+        """
+        channel = self.sc.server.channels.find(data['channel'])
+        timestamp = data['ts']
+        self.sc.api_call('reactions.add', name=reaction, channel=channel.id, timestamp=timestamp)
+
 
 def is_private_message(data):
     return data['channel'].startswith('D')
