@@ -1,10 +1,11 @@
 import logging
+import time
 from threading import Thread
 
 from slackclient import SlackClient
 
-from .storage import Database
 from .commands import CofiCommand, ResponseCommand
+from .storage import Database
 
 log = logging.getLogger(__name__)
 
@@ -70,3 +71,4 @@ def slack_listener(bot: SlackBot):
         data = bot.sc.rtm_read()
         if data:
             bot.handle(data)
+        time.sleep(1)
