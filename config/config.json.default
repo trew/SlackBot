@@ -11,5 +11,13 @@
     "port": 1234,
     "name": ""
   },
+  "database": {
+    "type": "mssql",
+    "user": "",
+    "password": "",
+    "host": "",
+    "port": 1234,
+    "name": ""
+  },
   "token": "<SLACK-TOKEN>"
 }

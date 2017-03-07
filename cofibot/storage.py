@@ -13,8 +13,8 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(String, primary_key=True)
-    name = Column(String)
+    id = Column(String(64), primary_key=True)
+    name = Column(String(128))
 
     @classmethod
     def get_or_create(cls, session, user_id, user_name):
@@ -30,7 +30,7 @@ class User(Base):
         return session.query(User).filter(User.id == user_id).first()
 
     def __repr__(self):
-        return "<User(id='%s', name='%s')" % (self.id, self.name)
+        return "<User(id='%s', name='%s')>" % (self.id, self.name)
 
 
 class Cofi(Base):
@@ -39,7 +39,7 @@ class Cofi(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     datetime = Column(DateTime, default=datetime.datetime.now)
 
-    user_id = Column(String, ForeignKey('users.id'))
+    user_id = Column(String(64), ForeignKey('users.id'))
 
     @classmethod
     def count(cls, session, user):
@@ -82,6 +82,16 @@ class Database(object):
             port = config['port']
             name = config['name']
             self.engine = create_engine('postgresql://%s:%s@%s:%s/%s' % (user, password, host, port, name))
+        elif db_type == 'sqlserver' or db_type == 'mssql':
+            user = config.get('user')
+            password = config.get('password')
+            host = config['host']
+            port = config['port']
+            name = config['name']
+            if user is None:
+                self.engine = create_engine('mssql+pyodbc://%s:%s/%s?driver=SQL+Server+Native+Client+11.0' % (host, port, name))
+            else:
+                self.engine = create_engine('mssql+pyodbc://%s:%s@%s:%s/%s' % (user, password, host, port, name))
         else:
             raise RuntimeError('Unsupported database type: %s' % db_type)
 
