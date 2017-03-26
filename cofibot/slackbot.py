@@ -3,6 +3,7 @@ import time
 from threading import Thread
 
 from slackclient import SlackClient
+from websocket import WebSocketConnectionClosedException
 
 from .commands import CofiCommand, ResponseCommand
 from .storage import Database
@@ -68,7 +69,14 @@ def is_private_message(data):
 
 def slack_listener(bot: SlackBot):
     while True:
-        data = bot.sc.rtm_read()
+        try:
+            data = bot.sc.rtm_read()
+        except (WebSocketConnectionClosedException, ConnectionResetError) as e:
+            log.exception(e)
+            log.info("Attempting reconnect...")
+            bot.sc.rtm_connect()
+            continue
+
         if data:
             bot.handle(data)
         time.sleep(1)
